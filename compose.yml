@@ -16,7 +16,7 @@ services:
     container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: db
+      MYSQL_DATABASE: film_catalog
       MYSQL_USER: user
       MYSQL_PASSWORD: password
     ports:
