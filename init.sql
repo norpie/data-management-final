@@ -56,6 +56,27 @@
 CREATE DATABASE IF NOT EXISTS film_catalog;
 USE film_catalog;
 
+-- Drop the tables if they exist
+DROP TABLE IF EXISTS user_reviews;
+DROP TABLE IF EXISTS audit_log;
+DROP TABLE IF EXISTS movie_crew_roles;
+DROP TABLE IF EXISTS crew;
+DROP TABLE IF EXISTS role_types;
+DROP TABLE IF EXISTS movie_genres;
+DROP TABLE IF EXISTS genres;
+DROP TABLE IF EXISTS movies;
+DROP TABLE IF EXISTS users;
+
+-- Drop the triggers if they exist
+DROP TRIGGER IF EXISTS validate_rating;
+
+-- Drop the procedures if they exist
+DROP PROCEDURE IF EXISTS add_movie;
+
+-- Drop the views if they exist
+DROP VIEW IF EXISTS top_movies_per_genre;
+DROP VIEW IF EXISTS top_rated_movies;
+
 -- Create the tables
 CREATE TABLE genres (
     id SERIAL PRIMARY KEY,
