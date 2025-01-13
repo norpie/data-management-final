@@ -134,3 +134,25 @@ CREATE TABLE audit_log (
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
+
+-- Create the triggers
+DELIMITER //
+CREATE TRIGGER validate_rating
+BEFORE INSERT ON user_reviews
+FOR EACH ROW
+BEGIN
+    IF NEW.rating < 1 OR NEW.rating > 10 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Rating must be between 1 and 10';
+    END IF;
+END;
+//
+
+CREATE TRIGGER audit_log
+AFTER INSERT OR UPDATE OR DELETE ON movies
+FOR EACH ROW
+BEGIN
+    INSERT INTO audit_log (table_name, record_id, action_type, old_value, new_value, user_id)
+    VALUES ('movies', NEW.id, IF(OLD.id IS NULL, 'INSERT', 'UPDATE'), JSON_OBJECT(), JSON_OBJECT('title', NEW.title, 'release_date', NEW.release_date, 'duration', NEW.duration, 'summary', NEW.summary), @user_id);
+END;
+//
