@@ -24,11 +24,11 @@
 --
 -- ## Structuur van de database
 --
--- **Movies**: Bevat details zoals titel, releasedatum, duur, samenvatting.
--- **Genres**: Een film kan meerdere genres hebben.
--- **Crew**: Met informatie zoals naam, geboortedatum, biografie.
--- **Roles**: Verbindt crew met hun specifieke rollen (zowel voor acteurs als voor crew, denk aan componist, regisseur, custume design, …) in films.
--- **UserReviews**: Beoordelingen en recensies van gebruikers.
+-- - **Movies**: Bevat details zoals titel, releasedatum, duur, samenvatting.
+-- - **Genres**: Een film kan meerdere genres hebben.
+-- - **Crew**: Met informatie zoals naam, geboortedatum, biografie.
+-- - **Roles**: Verbindt crew met hun specifieke rollen (zowel voor acteurs als voor crew, denk aan componist, regisseur, custume design, …) in films.
+-- - **UserReviews**: Beoordelingen en recensies van gebruikers.
 --
 -- ## Features
 -- 1. Sequences
