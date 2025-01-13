@@ -58,19 +58,19 @@ USE film_catalog;
 
 -- Create the tables
 CREATE TABLE genres (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     name VARCHAR(50) NOT NULL UNIQUE
 );
 
 CREATE TABLE movies (
-    id INT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     release_date DATE,
     duration INT, -- in minutes
     summary TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
+) AUTO_INCREMENT = 100000;
 
 CREATE TABLE movie_genres (
     movie_id INT,
@@ -81,7 +81,7 @@ CREATE TABLE movie_genres (
 );
 
 CREATE TABLE crew (
-    id INT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     birth_date DATE,
     biography TEXT,
@@ -89,7 +89,7 @@ CREATE TABLE crew (
 );
 
 CREATE TABLE role_types (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     name VARCHAR(50) NOT NULL UNIQUE
 );
 
@@ -105,15 +105,15 @@ CREATE TABLE movie_crew_roles (
 );
 
 CREATE TABLE users (
-    id INT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
     role ENUM('ADMIN', 'CONTRIBUTOR', 'API_ACCESS') NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+) AUTO_INCREMENT = 100000;
 
 CREATE TABLE user_reviews (
-    id INT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
     movie_id INT,
     rating INT CHECK (rating BETWEEN 1 AND 10),
@@ -121,10 +121,10 @@ CREATE TABLE user_reviews (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (movie_id) REFERENCES movies(id)
-);
+) AUTO_INCREMENT = 100000;
 
 CREATE TABLE audit_log (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     table_name VARCHAR(50) NOT NULL,
     record_id INT NOT NULL,
     action_type ENUM('INSERT', 'UPDATE', 'DELETE') NOT NULL,
