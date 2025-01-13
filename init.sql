@@ -166,6 +166,9 @@ BEGIN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Rating must be between 1 and 10';
     END IF;
+END //
+
+
 END;
 //
 
@@ -217,8 +220,7 @@ BEGIN
     SELECT @movie_id, id, role_type, character_name
     FROM JSON_TABLE(crew_data, '$[*]' COLUMNS (crew_name VARCHAR(255), birth_date DATE, biography TEXT, role_type INT, character_name VARCHAR(255))) AS crew
     JOIN crew ON crew_name = name;
-END;
-//
+END //
 
 DELIMITER ;
 
