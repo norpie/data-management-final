@@ -69,6 +69,9 @@ DROP TABLE IF EXISTS users;
 
 -- Drop the triggers if they exist
 DROP TRIGGER IF EXISTS validate_rating;
+DROP TRIGGER IF EXISTS audit_log_after_insert;
+DROP TRIGGER IF EXISTS audit_log_after_update;
+DROP TRIGGER IF EXISTS audit_log_after_delete;
 
 -- Drop the procedures if they exist
 DROP PROCEDURE IF EXISTS add_movie;
@@ -169,15 +172,55 @@ BEGIN
 END //
 
 
-END;
-//
-
-CREATE TRIGGER audit_log
-AFTER INSERT OR UPDATE OR DELETE ON movies
+CREATE TRIGGER audit_log_after_insert
+AFTER INSERT ON movies
 FOR EACH ROW
 BEGIN
     INSERT INTO audit_log (table_name, record_id, action_type, old_value, new_value, user_id)
-    VALUES ('movies', NEW.id, IF(OLD.id IS NULL, 'INSERT', 'UPDATE'), JSON_OBJECT(), JSON_OBJECT('title', NEW.title, 'release_date', NEW.release_date, 'duration', NEW.duration, 'summary', NEW.summary), @user_id);
+    VALUES (
+        'movies',
+        NEW.id,
+        'INSERT',
+        JSON_OBJECT(),
+        JSON_OBJECT('title', NEW.title, 'release_date', NEW.release_date, 'duration', NEW.duration, 'summary', NEW.summary),
+        @user_id
+    );
+END;
+//
+
+DELIMITER //
+
+CREATE TRIGGER audit_log_after_update
+AFTER UPDATE ON movies
+FOR EACH ROW
+BEGIN
+    INSERT INTO audit_log (table_name, record_id, action_type, old_value, new_value, user_id)
+    VALUES (
+        'movies',
+        NEW.id,
+        'UPDATE',
+        JSON_OBJECT('title', OLD.title, 'release_date', OLD.release_date, 'duration', OLD.duration, 'summary', OLD.summary),
+        JSON_OBJECT('title', NEW.title, 'release_date', NEW.release_date, 'duration', NEW.duration, 'summary', NEW.summary),
+        @user_id
+    );
+END;
+//
+
+DELIMITER //
+
+CREATE TRIGGER audit_log_after_delete
+AFTER DELETE ON movies
+FOR EACH ROW
+BEGIN
+    INSERT INTO audit_log (table_name, record_id, action_type, old_value, new_value, user_id)
+    VALUES (
+        'movies',
+        OLD.id,
+        'DELETE',
+        JSON_OBJECT('title', OLD.title, 'release_date', OLD.release_date, 'duration', OLD.duration, 'summary', OLD.summary),
+        JSON_OBJECT(),
+        @user_id
+    );
 END;
 //
 
