@@ -95,7 +95,7 @@ CREATE TABLE movies (
 
 CREATE TABLE movie_genres (
     movie_id INT,
-    genre_id INT,
+    genre_id BIGINT UNSIGNED,
     PRIMARY KEY (movie_id, genre_id),
     FOREIGN KEY (movie_id) REFERENCES movies(id),
     FOREIGN KEY (genre_id) REFERENCES genres(id)
@@ -116,8 +116,8 @@ CREATE TABLE role_types (
 
 CREATE TABLE movie_crew_roles (
     movie_id INT,
-    crew_id INT,
-    role_type_id INT,
+    crew_id BIGINT UNSIGNED,
+    role_type_id BIGINT UNSIGNED,
     character_name VARCHAR(255), -- For actors
     PRIMARY KEY (movie_id, crew_id, role_type_id),
     FOREIGN KEY (movie_id) REFERENCES movies(id),
