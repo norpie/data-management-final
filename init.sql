@@ -197,3 +197,23 @@ BEGIN
     FROM JSON_TABLE(crew_data, '$[*]' COLUMNS (crew_name VARCHAR(255), birth_date DATE, biography TEXT, role_type INT, character_name VARCHAR(255))) AS crew
     JOIN crew ON crew_name = name;
 END;
+//
+
+DELIMITER ;
+
+-- Create the views
+CREATE VIEW top_movies_per_genre AS
+SELECT g.name AS genre, m.title AS movie, AVG(ur.rating) AS average_rating
+FROM genres g
+JOIN movie_genres mg ON g.id = mg.genre_id
+JOIN movies m ON mg.movie_id = m.id
+LEFT JOIN user_reviews ur ON m.id = ur.movie_id
+GROUP BY g.name, m.title
+ORDER BY g.name, AVG(ur.rating) DESC;
+
+CREATE VIEW top_rated_movies AS
+SELECT m.title AS movie, AVG(ur.rating) AS average_rating
+FROM movies m
+LEFT JOIN user_reviews ur ON m.id = ur.movie_id
+GROUP BY m.title
+ORDER BY AVG(ur.rating) DESC;
