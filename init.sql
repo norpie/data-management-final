@@ -156,3 +156,44 @@ BEGIN
     VALUES ('movies', NEW.id, IF(OLD.id IS NULL, 'INSERT', 'UPDATE'), JSON_OBJECT(), JSON_OBJECT('title', NEW.title, 'release_date', NEW.release_date, 'duration', NEW.duration, 'summary', NEW.summary), @user_id);
 END;
 //
+
+-- Create the procedures
+DELIMITER //
+CREATE PROCEDURE add_movie(
+    IN title VARCHAR(255),
+    IN release_date DATE,
+    IN duration INT,
+    IN summary TEXT,
+    IN genre_names JSON,
+    IN crew_data JSON
+)
+BEGIN
+    INSERT INTO movies (title, release_date, duration, summary)
+    VALUES (title, release_date, duration, summary);
+    SET @movie_id = LAST_INSERT_ID();
+
+    -- Insert genres
+    INSERT INTO genres (name)
+    SELECT genre_name
+    FROM JSON_TABLE(genre_names, '$[*]' COLUMNS (genre_name VARCHAR(50))) AS genres
+    WHERE NOT EXISTS (
+        SELECT 1
+        FROM genres
+        WHERE name = genre_name
+    );
+
+    INSERT INTO movie_genres (movie_id, genre_id)
+    SELECT @movie_id, id
+    FROM genres
+    WHERE name IN (SELECT genre_name FROM JSON_TABLE(genre_names, '$[*]' COLUMNS (genre_name VARCHAR(50))) AS genres);
+
+    -- Insert crew
+    INSERT INTO crew (name, birth_date, biography)
+    SELECT crew_name, birth_date, biography
+    FROM JSON_TABLE(crew_data, '$[*]' COLUMNS (crew_name VARCHAR(255), birth_date DATE, biography TEXT)) AS crew;
+
+    INSERT INTO movie_crew_roles (movie_id, crew_id, role_type_id, character_name)
+    SELECT @movie_id, id, role_type, character_name
+    FROM JSON_TABLE(crew_data, '$[*]' COLUMNS (crew_name VARCHAR(255), birth_date DATE, biography TEXT, role_type INT, character_name VARCHAR(255))) AS crew
+    JOIN crew ON crew_name = name;
+END;
