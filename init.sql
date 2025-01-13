@@ -235,34 +235,52 @@ CREATE PROCEDURE add_movie(
     IN crew_data JSON
 )
 BEGIN
+    DECLARE movie_id INT;
+
+    -- Insert movie
     INSERT INTO movies (title, release_date, duration, summary)
     VALUES (title, release_date, duration, summary);
-    SET @movie_id = LAST_INSERT_ID();
+    SET movie_id = LAST_INSERT_ID();
 
-    -- Insert genres
+    -- Insert genres if they do not exist
     INSERT INTO genres (name)
-    SELECT genre_name
-    FROM JSON_TABLE(genre_names, '$[*]' COLUMNS (genre_name VARCHAR(50))) AS genres
+    SELECT DISTINCT genre_name
+    FROM JSON_TABLE(genre_names, '$[*]' COLUMNS (genre_name VARCHAR(50) PATH '$')) AS genre_list
     WHERE NOT EXISTS (
-        SELECT 1
-        FROM genres
-        WHERE name = genre_name
+        SELECT 1 FROM genres WHERE name = genre_name
     );
 
+    -- Link movie with genres
     INSERT INTO movie_genres (movie_id, genre_id)
-    SELECT @movie_id, id
+    SELECT movie_id, id
     FROM genres
-    WHERE name IN (SELECT genre_name FROM JSON_TABLE(genre_names, '$[*]' COLUMNS (genre_name VARCHAR(50))) AS genres);
+    WHERE name IN (
+        SELECT genre_name
+        FROM JSON_TABLE(genre_names, '$[*]' COLUMNS (genre_name VARCHAR(50) PATH '$')) AS genre_list
+    );
 
-    -- Insert crew
+    -- Insert crew if they do not exist
     INSERT INTO crew (name, birth_date, biography)
-    SELECT crew_name, birth_date, biography
-    FROM JSON_TABLE(crew_data, '$[*]' COLUMNS (crew_name VARCHAR(255), birth_date DATE, biography TEXT)) AS crew;
+    SELECT DISTINCT crew_name, birth_date, biography
+    FROM JSON_TABLE(crew_data, '$[*]' COLUMNS (
+        crew_name VARCHAR(255) PATH '$.crew_name',
+        birth_date DATE PATH '$.birth_date',
+        biography TEXT PATH '$.biography'
+    )) AS crew_list
+    WHERE NOT EXISTS (
+        SELECT 1 FROM crew WHERE name = crew_name
+    );
 
+    -- Link movie with crew roles
     INSERT INTO movie_crew_roles (movie_id, crew_id, role_type_id, character_name)
-    SELECT @movie_id, id, role_type, character_name
-    FROM JSON_TABLE(crew_data, '$[*]' COLUMNS (crew_name VARCHAR(255), birth_date DATE, biography TEXT, role_type INT, character_name VARCHAR(255))) AS crew
-    JOIN crew ON crew_name = name;
+    SELECT movie_id, crew.id, role_type, character_name
+    FROM JSON_TABLE(crew_data, '$[*]' COLUMNS (
+        crew_name VARCHAR(255) PATH '$.crew_name',
+        role_type INT PATH '$.role_type',
+        character_name VARCHAR(255) PATH '$.character_name'
+    )) AS crew_roles
+    JOIN crew ON crew.name = crew_name;
+
 END //
 
 DELIMITER ;
