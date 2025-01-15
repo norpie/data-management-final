@@ -75,6 +75,9 @@ DROP TRIGGER IF EXISTS audit_log_after_delete;
 
 -- Drop the procedures if they exist
 DROP PROCEDURE IF EXISTS add_movie;
+DROP PROCEDURE IF EXISTS validate_password;
+DROP PROCEDURE IF EXISTS hash_password;
+DROP PROCEDURE IF EXISTS add_user;
 
 -- Drop the views if they exist
 DROP VIEW IF EXISTS top_movies_per_genre;
@@ -279,7 +282,41 @@ BEGIN
         character_name VARCHAR(255) PATH '$.character_name'
     )) AS crew_roles
     JOIN crew ON crew.name = crew_name;
+END //
 
+CREATE PROCEDURE validate_password(
+    IN password VARCHAR(255),
+    IN hashed_password VARCHAR(255),
+    OUT is_valid BOOLEAN
+)
+BEGIN
+    DECLARE salt CHAR(16);
+    SET salt = SUBSTRING(hashed_password, 1, 16);
+    SET is_valid = hashed_password = CONCAT(salt, ':', SHA2(CONCAT(salt, password), 256));
+END //
+
+CREATE PROCEDURE hash_password(
+    IN password VARCHAR(255),
+    OUT hashed_password VARCHAR(255)
+)
+BEGIN
+    DECLARE hashed_password VARCHAR(255);
+    DECLARE salt CHAR(16);
+    SET @salt = RANDOM_BYTES(16);
+    SET hashed_password = SHA2(CONCAT(@salt, password), 256);
+    SET hashed_password = CONCAT(@salt, ':', hashed_password);
+END //
+
+CREATE PROCEDURE add_user(
+    IN username VARCHAR(50),
+    IN password VARCHAR(255)
+)
+BEGIN
+    DECLARE hashed_password VARCHAR(255);
+    CALL hash_password(password, hashed_password);
+    INSERT INTO users (username, password_hash)
+    VALUES (username, hashed_password);
+    CREATE USER username@'localhost' IDENTIFIED BY password;
 END //
 
 DELIMITER ;
