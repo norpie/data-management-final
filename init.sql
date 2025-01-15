@@ -83,6 +83,16 @@ DROP PROCEDURE IF EXISTS add_user;
 DROP VIEW IF EXISTS top_movies_per_genre;
 DROP VIEW IF EXISTS top_rated_movies;
 
+-- Drop the default users
+DROP USER IF EXISTS 'admin'@'%';
+DROP USER IF EXISTS 'contributor'@'%';
+DROP USER IF EXISTS 'api_access'@'%';
+
+-- Drop the roles
+DROP ROLE IF EXISTS API_ACCESS;
+DROP ROLE IF EXISTS CONTRIBUTOR;
+DROP ROLE IF EXISTS ADMIN;
+
 -- Create the tables
 CREATE TABLE genres (
     id SERIAL PRIMARY KEY,
