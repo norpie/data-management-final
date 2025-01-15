@@ -322,6 +322,15 @@ END //
 
 DELIMITER ;
 
+-- Create 3 default users
+-- - Admin: admin / admin
+-- - Contributor: contributor / contributor
+-- - API Access: api_access / api_access
+
+CALL add_user('admin', 'admin');
+CALL add_user('contributor', 'contributor');
+CALL add_user('api_access', 'api_access');
+
 -- Create the views
 CREATE VIEW top_movies_per_genre AS
 SELECT g.name AS genre, m.title AS movie, AVG(ur.rating) AS average_rating
