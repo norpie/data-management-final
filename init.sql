@@ -287,12 +287,12 @@ END //
 CREATE PROCEDURE validate_password(
     IN password VARCHAR(255),
     IN hashed_password VARCHAR(255),
-    OUT is_valid BOOLEAN
+    OUT is_valid TINYINT(1) -- Use TINYINT(1) instead of BOOLEAN
 )
 BEGIN
-    DECLARE salt CHAR(16);
-    SET salt = SUBSTRING(hashed_password, 1, 16);
-    SET is_valid = hashed_password = CONCAT(salt, ':', SHA2(CONCAT(salt, password), 256));
+    DECLARE salt CHAR(32); -- Adjusted to store HEX representation (16 bytes = 32 HEX characters)
+    SET salt = SUBSTRING(hashed_password, 1, 32); -- Extract the salt (32 HEX characters)
+    SET is_valid = (hashed_password = CONCAT(salt, ':', SHA2(CONCAT(salt, password), 256)));
 END //
 
 CREATE PROCEDURE hash_password(
@@ -300,11 +300,9 @@ CREATE PROCEDURE hash_password(
     OUT hashed_password VARCHAR(255)
 )
 BEGIN
-    DECLARE hashed_password VARCHAR(255);
-    DECLARE salt CHAR(16);
-    SET @salt = RANDOM_BYTES(16);
-    SET hashed_password = SHA2(CONCAT(@salt, password), 256);
-    SET hashed_password = CONCAT(@salt, ':', hashed_password);
+    DECLARE salt CHAR(32); -- Use HEX encoding for salt (16 bytes = 32 HEX characters)
+    SET salt = UPPER(HEX(RANDOM_BYTES(16))); -- Generate random 16-byte salt and convert to HEX
+    SET hashed_password = CONCAT(salt, ':', SHA2(CONCAT(salt, password), 256)); -- Hash with salt
 END //
 
 CREATE PROCEDURE add_user(
@@ -316,7 +314,10 @@ BEGIN
     CALL hash_password(password, hashed_password);
     INSERT INTO users (username, password_hash)
     VALUES (username, hashed_password);
-    CREATE USER username@'localhost' IDENTIFIED BY password;
+    SET @query = CONCAT('CREATE USER ', username, '@''%'' IDENTIFIED BY ''', password, '''');
+    PREPARE stmt FROM @query;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
 END //
 
 DELIMITER ;
