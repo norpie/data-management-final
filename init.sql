@@ -367,6 +367,11 @@ GRANT API_ACCESS TO 'api_access'@'%';
 GRANT CONTRIBUTOR TO 'contributor'@'%';
 GRANT ADMIN TO 'admin'@'%';
 
+-- Set default roles
+SET DEFAULT ROLE ADMIN TO 'admin'@'%';
+SET DEFAULT ROLE CONTRIBUTOR TO 'contributor'@'%';
+SET DEFAULT ROLE API_ACCESS TO 'api_access'@'%';
+
 -- Admin & Contributor common permissions
 GRANT SELECT, INSERT, UPDATE ON movies TO ADMIN, CONTRIBUTOR;
 GRANT SELECT, INSERT, UPDATE ON genres TO ADMIN, CONTRIBUTOR;
