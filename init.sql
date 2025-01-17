@@ -197,10 +197,7 @@ BEGIN
         JSON_OBJECT('title', NEW.title, 'release_date', NEW.release_date, 'duration', NEW.duration, 'summary', NEW.summary),
         @user_id
     );
-END;
-//
-
-DELIMITER //
+END //
 
 CREATE TRIGGER audit_log_after_update
 AFTER UPDATE ON movies
@@ -215,10 +212,7 @@ BEGIN
         JSON_OBJECT('title', NEW.title, 'release_date', NEW.release_date, 'duration', NEW.duration, 'summary', NEW.summary),
         @user_id
     );
-END;
-//
-
-DELIMITER //
+END //
 
 CREATE TRIGGER audit_log_after_delete
 AFTER DELETE ON movies
@@ -233,8 +227,7 @@ BEGIN
         JSON_OBJECT(),
         @user_id
     );
-END;
-//
+END //
 
 -- Create the procedures
 DELIMITER //
