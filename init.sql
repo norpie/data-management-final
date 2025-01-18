@@ -248,31 +248,31 @@ BEGIN
 
     -- Insert genres if they do not exist
     INSERT INTO genres (name)
-    SELECT DISTINCT genre_name
+    SELECT DISTINCT genre_name COLLATE utf8mb4_unicode_ci
     FROM JSON_TABLE(genre_names, '$[*]' COLUMNS (genre_name VARCHAR(50) PATH '$')) AS genre_list
     WHERE NOT EXISTS (
-        SELECT 1 FROM genres WHERE name = genre_name
+        SELECT 1 FROM genres WHERE name = genre_name COLLATE utf8mb4_unicode_ci
     );
 
     -- Link movie with genres
     INSERT INTO movie_genres (movie_id, genre_id)
     SELECT movie_id, id
     FROM genres
-    WHERE name IN (
-        SELECT genre_name
+    WHERE name COLLATE utf8mb4_unicode_ci IN (
+        SELECT genre_name COLLATE utf8mb4_unicode_ci
         FROM JSON_TABLE(genre_names, '$[*]' COLUMNS (genre_name VARCHAR(50) PATH '$')) AS genre_list
     );
 
     -- Insert crew if they do not exist
     INSERT INTO crew (name, birth_date, biography)
-    SELECT DISTINCT crew_name, birth_date, biography
+    SELECT DISTINCT crew_name COLLATE utf8mb4_unicode_ci, birth_date, biography
     FROM JSON_TABLE(crew_data, '$[*]' COLUMNS (
         crew_name VARCHAR(255) PATH '$.crew_name',
         birth_date DATE PATH '$.birth_date',
         biography TEXT PATH '$.biography'
     )) AS crew_list
     WHERE NOT EXISTS (
-        SELECT 1 FROM crew WHERE name = crew_name
+        SELECT 1 FROM crew WHERE name = crew_name COLLATE utf8mb4_unicode_ci
     );
 
     -- Link movie with crew roles
@@ -283,8 +283,9 @@ BEGIN
         role_type INT PATH '$.role_type',
         character_name VARCHAR(255) PATH '$.character_name'
     )) AS crew_roles
-    JOIN crew ON crew.name = crew_name;
+    JOIN crew ON crew.name COLLATE utf8mb4_unicode_ci = crew_name COLLATE utf8mb4_unicode_ci
 END //
+
 
 CREATE PROCEDURE validate_password(
     IN password VARCHAR(255),
