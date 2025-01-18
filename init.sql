@@ -78,6 +78,7 @@ DROP PROCEDURE IF EXISTS add_movie;
 DROP PROCEDURE IF EXISTS validate_password;
 DROP PROCEDURE IF EXISTS hash_password;
 DROP PROCEDURE IF EXISTS add_user;
+DROP PROCEDURE IF EXISTS add_review;
 
 -- Drop the views if they exist
 DROP VIEW IF EXISTS top_movies_per_genre;
