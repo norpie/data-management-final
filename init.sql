@@ -275,15 +275,24 @@ BEGIN
         SELECT 1 FROM crew WHERE name = crew_name COLLATE utf8mb4_unicode_ci
     );
 
+    -- Insert role_types if they do not exist
+    INSERT INTO role_types (name)
+    SELECT DISTINCT role_name COLLATE utf8mb4_unicode_ci
+    FROM JSON_TABLE(crew_data, '$[*]' COLUMNS (role_name VARCHAR(50) PATH '$.role_type_name')) AS roles
+    WHERE NOT EXISTS (
+        SELECT 1 FROM role_types WHERE name = role_name COLLATE utf8mb4_unicode_ci
+    );
+
     -- Link movie with crew roles
     INSERT INTO movie_crew_roles (movie_id, crew_id, role_type_id, character_name)
-    SELECT movie_id, crew.id, role_type, character_name
+    SELECT movie_id, crew.id, role_types.id, character_name
     FROM JSON_TABLE(crew_data, '$[*]' COLUMNS (
         crew_name VARCHAR(255) PATH '$.crew_name',
-        role_type INT PATH '$.role_type',
+        role_type_name VARCHAR(50) PATH '$.role_type_name',
         character_name VARCHAR(255) PATH '$.character_name'
     )) AS crew_roles
     JOIN crew ON crew.name COLLATE utf8mb4_unicode_ci = crew_name COLLATE utf8mb4_unicode_ci
+    JOIN role_types ON role_types.name COLLATE utf8mb4_unicode_ci = role_type_name COLLATE utf8mb4_unicode_ci;
 END //
 
 
@@ -324,6 +333,33 @@ BEGIN
 END //
 
 DELIMITER ;
+
+-- Creata a default movie
+
+CALL add_movie(
+    'The Great Adventure',                -- title
+    '2025-01-18',                         -- release_date
+    120,                                  -- duration (in minutes)
+    'A thrilling tale of exploration.',   -- summary
+    '[ "Adventure", "Action" ]',          -- genre_names (JSON array of genres)
+    '[
+        {
+            "crew_name": "John Doe",
+            "birth_date": "1980-05-15",
+            "biography": "An accomplished director.",
+            "role_type_name": "Director",
+            "character_name": null
+        },
+        {
+            "crew_name": "Jane Smith",
+            "birth_date": "1990-03-22",
+            "biography": "A talented actress.",
+            "role_type_name": "Actor",
+            "character_name": "Heroine"
+        }
+    ]'                                    -- crew_data (JSON array of crew members with roles)
+);
+
 
 -- Create 3 default users
 -- - Admin: admin / admin
