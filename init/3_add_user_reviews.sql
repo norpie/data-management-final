@@ -18,7 +18,7 @@
 CALL add_review(100003, 100000, 8, 'Great start to the MCU, Robert Downey Jr. is fantastic!');
 CALL add_review(100004, 100000, 7, 'Solid action movie, but a bit predictable.');
 CALL add_review(100005, 100000, 9, 'Loved the character development and tech.');
-CALL add_review(100006, 100000, 6, 'Not bad, but it didn’t blow me away.');
+CALL add_review(100006, 100000, 6, 'Not bad, but it didn''t blow me away.');
 CALL add_review(100007, 100000, 10, 'A perfect superhero movie!');
 CALL add_review(100008, 100000, 7, 'Good movie, but lacks depth.');
 CALL add_review(100009, 100000, 8, 'The humor and action are well-balanced.');
