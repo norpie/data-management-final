@@ -356,13 +356,21 @@ CALL add_user('api_access', 'api_access');
 
 -- Create the views
 CREATE VIEW top_movies_per_genre AS
-SELECT g.name AS genre, m.title AS movie, AVG(ur.rating) AS average_rating
-FROM genres g
-JOIN movie_genres mg ON g.id = mg.genre_id
-JOIN movies m ON mg.movie_id = m.id
-LEFT JOIN user_reviews ur ON m.id = ur.movie_id
-GROUP BY g.name, m.title
-ORDER BY g.name, AVG(ur.rating) DESC;
+WITH ranked_movies AS (
+    SELECT
+        g.name AS genre,
+        m.title AS movie,
+        AVG(ur.rating) AS average_rating,
+        ROW_NUMBER() OVER (PARTITION BY g.name ORDER BY AVG(ur.rating) DESC) AS movie_rank
+    FROM genres g
+    JOIN movie_genres mg ON g.id = mg.genre_id
+    JOIN movies m ON mg.movie_id = m.id
+    LEFT JOIN user_reviews ur ON m.id = ur.movie_id
+    GROUP BY g.name, m.title
+)
+SELECT genre, movie, average_rating
+FROM ranked_movies
+WHERE movie_rank = 1;
 
 CREATE VIEW top_rated_movies AS
 SELECT m.title AS movie, AVG(ur.rating) AS average_rating
