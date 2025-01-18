@@ -230,7 +230,6 @@ BEGIN
 END //
 
 -- Create the procedures
-DELIMITER //
 CREATE PROCEDURE add_movie(
     IN title VARCHAR(255),
     IN release_date DATE,
