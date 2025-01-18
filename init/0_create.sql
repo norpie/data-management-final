@@ -1,5 +1,5 @@
 -- Create the database
-CREATE DATABASE IF NOT EXISTS film_catalog;
+CREATE DATABASE IF NOT EXISTS film_catalog CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE film_catalog;
 
 -- Create the tables
@@ -157,39 +157,39 @@ BEGIN
 
     -- Insert genres if they do not exist
     INSERT INTO genres (name)
-    SELECT DISTINCT genre_name COLLATE utf8mb4_unicode_ci
+    SELECT DISTINCT genre_name
     FROM JSON_TABLE(genre_names, '$[*]' COLUMNS (genre_name VARCHAR(50) PATH '$')) AS genre_list
     WHERE NOT EXISTS (
-        SELECT 1 FROM genres WHERE name = genre_name COLLATE utf8mb4_unicode_ci
+        SELECT 1 FROM genres WHERE name = genre_name
     );
 
     -- Link movie with genres
     INSERT INTO movie_genres (movie_id, genre_id)
     SELECT movie_id, id
     FROM genres
-    WHERE name COLLATE utf8mb4_unicode_ci IN (
-        SELECT genre_name COLLATE utf8mb4_unicode_ci
+    WHERE name  IN (
+        SELECT genre_name
         FROM JSON_TABLE(genre_names, '$[*]' COLUMNS (genre_name VARCHAR(50) PATH '$')) AS genre_list
     );
 
     -- Insert crew if they do not exist
     INSERT INTO crew (name, birth_date, biography)
-    SELECT DISTINCT crew_name COLLATE utf8mb4_unicode_ci, birth_date, biography
+    SELECT DISTINCT crew_name , birth_date, biography
     FROM JSON_TABLE(crew_data, '$[*]' COLUMNS (
         crew_name VARCHAR(255) PATH '$.crew_name',
         birth_date DATE PATH '$.birth_date',
         biography TEXT PATH '$.biography'
     )) AS crew_list
     WHERE NOT EXISTS (
-        SELECT 1 FROM crew WHERE name = crew_name COLLATE utf8mb4_unicode_ci
+        SELECT 1 FROM crew WHERE name = crew_name
     );
 
     -- Insert role_types if they do not exist
     INSERT INTO role_types (name)
-    SELECT DISTINCT role_name COLLATE utf8mb4_unicode_ci
+    SELECT DISTINCT role_name
     FROM JSON_TABLE(crew_data, '$[*]' COLUMNS (role_name VARCHAR(50) PATH '$.role_type_name')) AS roles
     WHERE NOT EXISTS (
-        SELECT 1 FROM role_types WHERE name = role_name COLLATE utf8mb4_unicode_ci
+        SELECT 1 FROM role_types WHERE name = role_name
     );
 
     -- Link movie with crew roles
@@ -200,8 +200,8 @@ BEGIN
         role_type_name VARCHAR(50) PATH '$.role_type_name',
         character_name VARCHAR(255) PATH '$.character_name'
     )) AS crew_roles
-    JOIN crew ON crew.name COLLATE utf8mb4_unicode_ci = crew_name COLLATE utf8mb4_unicode_ci
-    JOIN role_types ON role_types.name COLLATE utf8mb4_unicode_ci = role_type_name COLLATE utf8mb4_unicode_ci;
+    JOIN crew ON crew.name = crew_name
+    JOIN role_types ON role_types.name = role_type_name ;
 END //
 
 CREATE PROCEDURE add_review(
