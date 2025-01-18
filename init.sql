@@ -295,6 +295,16 @@ BEGIN
     JOIN role_types ON role_types.name COLLATE utf8mb4_unicode_ci = role_type_name COLLATE utf8mb4_unicode_ci;
 END //
 
+CREATE PROCEDURE add_review(
+    IN user_id INT,
+    IN movie_id INT,
+    IN rating INT,
+    IN review_text TEXT
+)
+BEGIN
+    INSERT INTO user_reviews (user_id, movie_id, rating, review_text)
+    VALUES (user_id, movie_id, rating, review_text);
+END //
 
 CREATE PROCEDURE validate_password(
     IN password VARCHAR(255),
