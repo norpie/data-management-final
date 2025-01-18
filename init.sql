@@ -334,33 +334,6 @@ END //
 
 DELIMITER ;
 
--- Creata a default movie
-
-CALL add_movie(
-    'The Great Adventure',                -- title
-    '2025-01-18',                         -- release_date
-    120,                                  -- duration (in minutes)
-    'A thrilling tale of exploration.',   -- summary
-    '[ "Adventure", "Action" ]',          -- genre_names (JSON array of genres)
-    '[
-        {
-            "crew_name": "John Doe",
-            "birth_date": "1980-05-15",
-            "biography": "An accomplished director.",
-            "role_type_name": "Director",
-            "character_name": null
-        },
-        {
-            "crew_name": "Jane Smith",
-            "birth_date": "1990-03-22",
-            "biography": "A talented actress.",
-            "role_type_name": "Actor",
-            "character_name": "Heroine"
-        }
-    ]'                                    -- crew_data (JSON array of crew members with roles)
-);
-
-
 -- Create 3 default users
 -- - Admin: admin / admin
 -- - Contributor: contributor / contributor
