@@ -74,7 +74,7 @@ Er werd gebruik gemaakt van Github Copilot tijdens het schrijven van de SQL-code
 
 ### Claude
 
-Claude doesn't provide a shareable link, so a json export is available in the `sources` directory as `claude.json`.
+Claude voorziet geen deelbare link, dus een JSON-export is beschikbaar in de `sources` directory als `claude.json`.
 
 [claude.json](sources/claude.json)
 
