@@ -51,3 +51,87 @@ toevoegen.
     - Rollen en rechten: Toegang wordt gecontroleerd met specifieke rollen (API_ACCESS, CONTRIBUTOR, ADMIN).
 3. Encryptie
     - Gevoelige gegevens zoals gebruikerswachtwoorden worden gehashed opgeslagen.
+
+## Bronnen
+
+### Copilot
+
+Er werd gebruik gemaakt van Github Copilot tijdens het schrijven van de SQL-code.
+
+### ChatGPT
+
+- https://chatgpt.com/share/678cf0c7-5b78-8002-b3bc-65f5e0c3c005
+- https://chatgpt.com/share/678cf0d8-9a68-8002-99cb-e33f06286160
+- https://chatgpt.com/share/678cf0ea-bad0-8002-a769-8a538f23ee0d
+- https://chatgpt.com/share/678cf0f6-2fb4-8002-b467-d5d516337c19
+- https://chatgpt.com/share/678cf104-8514-8002-b03a-5bdeddb72142
+- https://chatgpt.com/share/678cf112-c630-8002-9399-7efe0d934e96
+- https://chatgpt.com/share/678cf122-08f0-8002-95fe-db027d6655e9
+- https://chatgpt.com/share/678cf129-930c-8002-8a9d-f1b8d7ec95c8
+- https://chatgpt.com/share/678cf130-37d8-8002-82d5-0d23b1796399
+- https://chatgpt.com/share/678cf136-e8ec-8002-b443-087e7c7827e6
+- https://chatgpt.com/share/678cf13f-efd0-8002-bf5d-c08d79b3a912
+
+### Claude
+
+Claude doesn't provide a shareable link, so a json export is available in the `sources` directory as `claude.json`.
+
+[claude.json](sources/claude.json)
+
+### Websites
+
+- [http://dev.mysql.com/doc/refman/5.5/en/password-logging.html](http://dev.mysql.com/doc/refman/5.5/en/password-logging.html)
+- [http://dev.mysql.com/doc/refman/5.6/en/password-logging.html](http://dev.mysql.com/doc/refman/5.6/en/password-logging.html)
+- [https://dba.stackexchange.com/questions/76788/create-a-mysql-database-with-charset-utf-8](https://dba.stackexchange.com/questions/76788/create-a-mysql-database-with-charset-utf-8)
+- [https://dev.mysql.com/doc/en/create-database.html](https://dev.mysql.com/doc/en/create-database.html)
+- [https://dev.mysql.com/doc/en/encryption-functions.html](https://dev.mysql.com/doc/en/encryption-functions.html)
+- [https://dev.mysql.com/doc/en/grant.html](https://dev.mysql.com/doc/en/grant.html)
+- [https://dev.mysql.com/doc/en/mysql.html](https://dev.mysql.com/doc/en/mysql.html)
+- [https://dev.mysql.com/doc/en/set.html](https://dev.mysql.com/doc/en/set.html)
+- [https://dev.mysql.com/doc/mysql-security-excerpt/5.7/en/password-hashing.html](https://dev.mysql.com/doc/mysql-security-excerpt/5.7/en/password-hashing.html)
+- [https://dev.mysql.com/doc/mysql-shell/8.0/en/mysql-shell-extension-objects-create.html](https://dev.mysql.com/doc/mysql-shell/8.0/en/mysql-shell-extension-objects-create.html)
+- [https://dev.mysql.com/doc/refman/5.5/en/password-logging.html](https://dev.mysql.com/doc/refman/5.5/en/password-logging.html)
+- [https://dev.mysql.com/doc/refman/5.6/en/password-logging.html](https://dev.mysql.com/doc/refman/5.6/en/password-logging.html)
+- [https://dev.mysql.com/doc/refman/8.0/en/charset-server.html](https://dev.mysql.com/doc/refman/8.0/en/charset-server.html)
+- [https://dev.mysql.com/doc/refman/8.2/en/set-default-role.html](https://dev.mysql.com/doc/refman/8.2/en/set-default-role.html)
+- [https://dev.mysql.com/doc/refman/8.4/en/connecting.html](https://dev.mysql.com/doc/refman/8.4/en/connecting.html)
+- [https://dev.mysql.com/doc/refman/8.4/en/create-database.html](https://dev.mysql.com/doc/refman/8.4/en/create-database.html)
+- [https://dev.mysql.com/doc/refman/8.4/en/create-role.html](https://dev.mysql.com/doc/refman/8.4/en/create-role.html)
+- [https://dev.mysql.com/doc/refman/8.4/en/encryption-functions.html](https://dev.mysql.com/doc/refman/8.4/en/encryption-functions.html)
+- [https://dev.mysql.com/doc/refman/8.4/en/grant.html](https://dev.mysql.com/doc/refman/8.4/en/grant.html)
+- [https://dev.mysql.com/doc/refman/8.4/en/mysql.html](https://dev.mysql.com/doc/refman/8.4/en/mysql.html)
+- [https://dev.mysql.com/doc/refman/8.4/en/password-logging.html](https://dev.mysql.com/doc/refman/8.4/en/password-logging.html)
+- [https://dev.mysql.com/doc/refman/8.4/en/password-management.html](https://dev.mysql.com/doc/refman/8.4/en/password-management.html)
+- [https://dev.mysql.com/doc/refman/8.4/en/roles.html](https://dev.mysql.com/doc/refman/8.4/en/roles.html)
+- [https://dev.mysql.com/doc/refman/8.4/en/set-default-role.html](https://dev.mysql.com/doc/refman/8.4/en/set-default-role.html)
+- [https://dev.mysql.com/doc/refman/8.4/en/set.html](https://dev.mysql.com/doc/refman/8.4/en/set.html)
+- [https://dev.mysql.com/doc/refman/8.4/en/set-variable.html](https://dev.mysql.com/doc/refman/8.4/en/set-variable.html)
+- [https://dev.mysql.com/doc/refman/en/set-variable.html](https://dev.mysql.com/doc/refman/en/set-variable.html)
+- [https://dev.mysql.com/doc/search/?d=371&p=1&q=hash](https://dev.mysql.com/doc/search/?d=371&p=1&q=hash)
+- [https://dev.mysql.com/doc/search/?d=371&p=1&q=hash+salt](https://dev.mysql.com/doc/search/?d=371&p=1&q=hash+salt)
+- [https://dev.mysql.com/doc/search/?d=371&p=1&q=password](https://dev.mysql.com/doc/search/?d=371&p=1&q=password)
+- [https://dev.mysql.com/doc/search/?d=371&p=1&q=salt+hash](https://dev.mysql.com/doc/search/?d=371&p=1&q=salt+hash)
+- [https://dev.mysql.com/doc/search/?q=salt+hash&d=371&p=2](https://dev.mysql.com/doc/search/?q=salt+hash&d=371&p=2)
+- [https://gist.github.com/miratcan/4276757](https://gist.github.com/miratcan/4276757)
+- [https://gist.github.com/spalladino/6d981f7b33f6e0afe6bb](https://gist.github.com/spalladino/6d981f7b33f6e0afe6bb)
+- [https://hub.docker.com/_/mysql](https://hub.docker.com/_/mysql)
+- [https://medium.com/@elaurichetoho/unlock-the-power-of-docker-effortlessly-run-mysql-and-phpmyadmin-containers-for-seamless-database-3d56fd496c4d](https://medium.com/@elaurichetoho/unlock-the-power-of-docker-effortlessly-run-mysql-and-phpmyadmin-containers-for-seamless-database-3d56fd496c4d)
+- [https://stackoverflow.com/questions/14148880/how-do-i-reference-a-foreign-key-to-serial-datatype](https://stackoverflow.com/questions/14148880/how-do-i-reference-a-foreign-key-to-serial-datatype)
+- [https://stackoverflow.com/questions/16165423/declare-and-set-not-recognized-syntax-for-my-sql-server](https://stackoverflow.com/questions/16165423/declare-and-set-not-recognized-syntax-for-my-sql-server)
+- [https://stackoverflow.com/questions/16287559/mysql-adding-user-for-remote-access](https://stackoverflow.com/questions/16287559/mysql-adding-user-for-remote-access)
+- [https://stackoverflow.com/questions/16969060/mysql-error-1215-cannot-add-foreign-key-constraint](https://stackoverflow.com/questions/16969060/mysql-error-1215-cannot-add-foreign-key-constraint)
+- [https://stackoverflow.com/questions/18930084/mysql-error-1215-hy000-cannot-add-foreign-key-constraint](https://stackoverflow.com/questions/18930084/mysql-error-1215-hy000-cannot-add-foreign-key-constraint)
+- [https://stackoverflow.com/questions/20295778/how-to-use-bcrypt-algorithm-within-encrypt-function-in-mysql-for-verifying-p](https://stackoverflow.com/questions/20295778/how-to-use-bcrypt-algorithm-within-encrypt-function-in-mysql-for-verifying-p)
+- [https://stackoverflow.com/questions/23278565/salting-and-hashing-passwords-in-mysql](https://stackoverflow.com/questions/23278565/salting-and-hashing-passwords-in-mysql)
+- [https://stackoverflow.com/questions/25852239/collation-utf8-general-ci-is-not-valid-for-character-set-latin1](https://stackoverflow.com/questions/25852239/collation-utf8-general-ci-is-not-valid-for-character-set-latin1)
+- [https://stackoverflow.com/questions/26578313/how-do-i-create-a-sequence-in-mysql](https://stackoverflow.com/questions/26578313/how-do-i-create-a-sequence-in-mysql)
+- [https://stackoverflow.com/questions/28389458/how-to-execute-mysql-command-from-the-host-to-container-running-mysql-server](https://stackoverflow.com/questions/28389458/how-to-execute-mysql-command-from-the-host-to-container-running-mysql-server)
+- [https://stackoverflow.com/questions/3029321/troubleshooting-illegal-mix-of-collations-error-in-mysql](https://stackoverflow.com/questions/3029321/troubleshooting-illegal-mix-of-collations-error-in-mysql)
+- [https://stackoverflow.com/questions/3544322/how-to-use-an-auto-incremented-primary-key-as-a-foreign-key-as-well](https://stackoverflow.com/questions/3544322/how-to-use-an-auto-incremented-primary-key-as-a-foreign-key-as-well)
+- [https://stackoverflow.com/questions/36617682/docker-compose-mysql-import-sql](https://stackoverflow.com/questions/36617682/docker-compose-mysql-import-sql)
+- [https://stackoverflow.com/questions/37667064/boolean-type-on-mysql](https://stackoverflow.com/questions/37667064/boolean-type-on-mysql)
+- [https://stackoverflow.com/questions/45729326/how-to-change-the-default-character-set-of-mysql-using-docker-compose](https://stackoverflow.com/questions/45729326/how-to-change-the-default-character-set-of-mysql-using-docker-compose)
+- [https://stackoverflow.com/questions/47007179/bcrypt-password-compare-function-always-return-false](https://stackoverflow.com/questions/47007179/bcrypt-password-compare-function-always-return-false)
+- [https://stackoverflow.com/questions/5016505/mysql-grant-all-privileges-on-database](https://stackoverflow.com/questions/5016505/mysql-grant-all-privileges-on-database)
+- [https://stackoverflow.com/questions/9596652/how-to-escape-apostrophe-a-single-quote-in-mysql](https://stackoverflow.com/questions/9596652/how-to-escape-apostrophe-a-single-quote-in-mysql)
+- [https://www.atlassian.com/data/admin/how-to-grant-all-privileges-on-a-database-in-mysql](https://www.atlassian.com/data/admin/how-to-grant-all-privileges-on-a-database-in-mysql)
