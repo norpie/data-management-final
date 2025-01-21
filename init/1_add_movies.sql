@@ -1,62 +1,77 @@
-CALL add_movie(
-    'Iron Man',
-    '2008-05-02',
-    126,
-    'After being held captive in an Afghan cave, billionaire engineer Tony Stark creates a unique weaponized suit of armor to fight evil.',
-    JSON_ARRAY('Action', 'Adventure', 'Sci-Fi'),
-    JSON_ARRAY(
-        JSON_OBJECT('crew_name', 'Robert Downey Jr.', 'birth_date', '1965-04-04', 'biography', 'Plays Tony Stark', 'role_type_name', 'Actor', 'character_name', 'Tony Stark'),
-        JSON_OBJECT('crew_name', 'Jon Favreau', 'birth_date', '1966-10-19', 'biography', 'Directed the movie', 'role_type_name', 'Director', 'character_name', NULL)
-    )
-);
+-- Add random movies to the database for performance
 
-CALL add_movie(
-    'The Incredible Hulk',
-    '2008-06-13',
-    112,
-    'Bruce Banner, a scientist on the run from the U.S. Government, must find a cure for the monster he becomes whenever he loses his temper.',
-    JSON_ARRAY('Action', 'Adventure', 'Sci-Fi'),
-    JSON_ARRAY(
-        JSON_OBJECT('crew_name', 'Edward Norton', 'birth_date', '1969-08-18', 'biography', 'Plays Bruce Banner', 'role_type_name', 'Actor', 'character_name', 'Bruce Banner'),
-        JSON_OBJECT('crew_name', 'Louis Leterrier', 'birth_date', '1973-06-17', 'biography', 'Directed the movie', 'role_type_name', 'Director', 'character_name', NULL)
-    )
-);
+DELIMITER $$
 
-CALL add_movie(
-    'Iron Man 2',
-    '2010-05-07',
-    124,
-    'With the world now aware of his identity as Iron Man, Tony Stark faces pressure from all sides to share his technology.',
-    JSON_ARRAY('Action', 'Adventure', 'Sci-Fi'),
-    JSON_ARRAY(
-        JSON_OBJECT('crew_name', 'Robert Downey Jr.', 'birth_date', '1965-04-04', 'biography', 'Plays Tony Stark', 'role_type_name', 'Actor', 'character_name', 'Tony Stark'),
-        JSON_OBJECT('crew_name', 'Jon Favreau', 'birth_date', '1966-10-19', 'biography', 'Directed the movie', 'role_type_name', 'Director', 'character_name', NULL)
-    )
-);
+CREATE PROCEDURE generate_random_movies(IN num_movies INT)
+BEGIN
+    DECLARE i INT DEFAULT 1;
+    DECLARE random_title VARCHAR(255);
+    DECLARE random_release_date DATE;
+    DECLARE random_duration INT;
+    DECLARE random_description TEXT;
+    DECLARE random_genres JSON;
+    DECLARE random_crew JSON;
+    DECLARE genre_list JSON;
+    DECLARE crew_type_list JSON;
+    DECLARE genre_count INT;
+    DECLARE crew_count INT;
 
-CALL add_movie(
-    'The Avengers',
-    '2012-05-04',
-    143,
-    'Earth''s mightiest heroes must come together and learn to fight as a team if they are to stop the mischievous Loki and his alien army from enslaving humanity.',
-    JSON_ARRAY('Action', 'Adventure', 'Sci-Fi'),
-    JSON_ARRAY(
-        JSON_OBJECT('crew_name', 'Robert Downey Jr.', 'birth_date', '1965-04-04', 'biography', 'Plays Tony Stark', 'role_type_name', 'Actor', 'character_name', 'Tony Stark'),
-        JSON_OBJECT('crew_name', 'Chris Evans', 'birth_date', '1981-06-13', 'biography', 'Plays Steve Rogers', 'role_type_name', 'Actor', 'character_name', 'Steve Rogers'),
-        JSON_OBJECT('crew_name', 'Joss Whedon', 'birth_date', '1964-06-23', 'biography', 'Directed the movie', 'role_type_name', 'Director', 'character_name', NULL)
-    )
-);
+    -- List of 20 genres
+    SET genre_list = JSON_ARRAY(
+        'Action', 'Adventure', 'Comedy', 'Drama', 'Horror',
+        'Romance', 'Sci-Fi', 'Fantasy', 'Thriller', 'Mystery',
+        'Animation', 'Documentary', 'Biography', 'Crime', 'Family',
+        'History', 'Musical', 'War', 'Western', 'Sport'
+    );
 
-CALL add_movie(
-    'Avengers: Endgame',
-    '2019-04-26',
-    181,
-    'After the devastating events of Avengers: Infinity War, the Avengers assemble once more to reverse Thanos'' actions and restore balance to the universe.',
-    JSON_ARRAY('Action', 'Adventure', 'Sci-Fi'),
-    JSON_ARRAY(
-        JSON_OBJECT('crew_name', 'Robert Downey Jr.', 'birth_date', '1965-04-04', 'biography', 'Plays Tony Stark', 'role_type_name', 'Actor', 'character_name', 'Tony Stark'),
-        JSON_OBJECT('crew_name', 'Chris Evans', 'birth_date', '1981-06-13', 'biography', 'Plays Steve Rogers', 'role_type_name', 'Actor', 'character_name', 'Steve Rogers'),
-        JSON_OBJECT('crew_name', 'Anthony Russo', 'birth_date', '1970-02-03', 'biography', 'Directed the movie', 'role_type_name', 'Director', 'character_name', NULL),
-        JSON_OBJECT('crew_name', 'Joe Russo', 'birth_date', '1971-07-18', 'biography', 'Directed the movie', 'role_type_name', 'Director', 'character_name', NULL)
-    )
-);
+    -- List of crew types
+    SET crew_type_list = JSON_ARRAY('Actor', 'Director', 'Producer', 'Writer', 'Cinematographer', 'Editor');
+
+    WHILE i <= num_movies DO
+        -- Generate random movie details
+        SET random_title = CONCAT('Movie ', i);
+        SET random_release_date = DATE_ADD('2000-01-01', INTERVAL FLOOR(RAND() * 8000) DAY);
+        SET random_duration = FLOOR(RAND() * 200) + 60;
+        SET random_description = CONCAT('Description for movie ', i);
+
+        -- Generate random genres (2-4)
+        SET genre_count = FLOOR(RAND() * 3) + 2;
+        SET random_genres = JSON_ARRAY();
+        WHILE JSON_LENGTH(random_genres) < genre_count DO
+            SET random_genres = JSON_ARRAY_APPEND(
+                random_genres, '$',
+                JSON_UNQUOTE(JSON_EXTRACT(genre_list, CONCAT('$[', FLOOR(RAND() * 20), ']')))
+            );
+        END WHILE;
+
+        -- Generate random crew members (2-20)
+        SET crew_count = FLOOR(RAND() * 19) + 2;
+        SET random_crew = JSON_ARRAY();
+        WHILE JSON_LENGTH(random_crew) < crew_count DO
+            SET @role_type = JSON_UNQUOTE(JSON_EXTRACT(crew_type_list, CONCAT('$[', FLOOR(RAND() * 6), ']')));
+            SET random_crew = JSON_ARRAY_APPEND(
+                random_crew, '$',
+                JSON_OBJECT(
+                    'crew_name', CONCAT('Crew Member ', i, '-', JSON_LENGTH(random_crew) + 1),
+                    'birth_date', DATE_ADD('1970-01-01', INTERVAL FLOOR(RAND() * 15000) DAY),
+                    'biography', CONCAT('Bio for crew member ', i, '-', JSON_LENGTH(random_crew) + 1),
+                    'role_type_name', @role_type,
+                    'character_name', CASE
+                        WHEN @role_type = 'Actor' THEN CONCAT('Character ', i, '-', JSON_LENGTH(random_crew) + 1)
+                        ELSE NULL
+                    END
+                )
+            );
+        END WHILE;
+
+        -- Call the procedure
+        CALL add_movie(random_title, random_release_date, random_duration, random_description, random_genres, random_crew);
+
+        SET i = i + 1;
+    END WHILE;
+END$$
+
+DELIMITER ;
+
+-- Example: Generate 100 random movies
+CALL generate_random_movies(500);
