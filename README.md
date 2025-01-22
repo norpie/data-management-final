@@ -52,6 +52,10 @@ toevoegen.
 3. Encryptie
     - Gevoelige gegevens zoals gebruikerswachtwoorden worden gehashed opgeslagen.
 
+## ERD
+
+![ERD](https://github.com/user-attachments/assets/b61ba447-dd41-4573-a222-2cb07dc55236)
+
 ## Bronnen
 
 ### Copilot
