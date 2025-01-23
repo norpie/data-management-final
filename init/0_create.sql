@@ -75,9 +75,8 @@ CREATE TABLE audit_log (
     action_type ENUM('INSERT', 'UPDATE', 'DELETE') NOT NULL,
     old_value JSON,
     new_value JSON,
-    user_id INT,
-    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    account_name VARCHAR(50) NOT NULL,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Create the triggers
@@ -97,14 +96,14 @@ CREATE TRIGGER audit_log_after_insert
 AFTER INSERT ON movies
 FOR EACH ROW
 BEGIN
-    INSERT INTO audit_log (table_name, record_id, action_type, old_value, new_value, user_id)
+    INSERT INTO audit_log (table_name, record_id, action_type, old_value, new_value, account_name)
     VALUES (
         'movies',
         NEW.id,
         'INSERT',
         JSON_OBJECT(),
         JSON_OBJECT('title', NEW.title, 'release_date', NEW.release_date, 'duration', NEW.duration, 'summary', NEW.summary),
-        @user_id
+        CURRENT_USER()
     );
 END //
 
@@ -112,14 +111,14 @@ CREATE TRIGGER audit_log_after_update
 AFTER UPDATE ON movies
 FOR EACH ROW
 BEGIN
-    INSERT INTO audit_log (table_name, record_id, action_type, old_value, new_value, user_id)
+    INSERT INTO audit_log (table_name, record_id, action_type, old_value, new_value, account_name)
     VALUES (
         'movies',
         NEW.id,
         'UPDATE',
         JSON_OBJECT('title', OLD.title, 'release_date', OLD.release_date, 'duration', OLD.duration, 'summary', OLD.summary),
         JSON_OBJECT('title', NEW.title, 'release_date', NEW.release_date, 'duration', NEW.duration, 'summary', NEW.summary),
-        @user_id
+        CURRENT_USER()
     );
 END //
 
@@ -127,14 +126,14 @@ CREATE TRIGGER audit_log_after_delete
 AFTER DELETE ON movies
 FOR EACH ROW
 BEGIN
-    INSERT INTO audit_log (table_name, record_id, action_type, old_value, new_value, user_id)
+    INSERT INTO audit_log (table_name, record_id, action_type, old_value, new_value, account_name)
     VALUES (
         'movies',
         OLD.id,
         'DELETE',
         JSON_OBJECT('title', OLD.title, 'release_date', OLD.release_date, 'duration', OLD.duration, 'summary', OLD.summary),
         JSON_OBJECT(),
-        @user_id
+        CURRENT_USER()
     );
 END //
 
