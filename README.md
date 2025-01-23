@@ -54,7 +54,7 @@ toevoegen.
 
 ## ERD
 
-![ERD](https://github.com/user-attachments/assets/b61ba447-dd41-4573-a222-2cb07dc55236)
+![ERD](https://github.com/user-attachments/assets/ad3dd7c8-9214-41aa-a15c-82edc4552b6e)
 
 ## Bronnen
 
