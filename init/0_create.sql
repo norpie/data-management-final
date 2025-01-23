@@ -244,10 +244,6 @@ BEGIN
     CALL hash_password(password, hashed_password);
     INSERT INTO users (username, password_hash)
     VALUES (username, hashed_password);
-    SET @query = CONCAT('CREATE USER ', username, '@''%'' IDENTIFIED BY ''', password, '''');
-    PREPARE stmt FROM @query;
-    EXECUTE stmt;
-    DEALLOCATE PREPARE stmt;
 END //
 
 DELIMITER ;
@@ -258,8 +254,11 @@ DELIMITER ;
 -- - API Access: api_access / api_access
 
 CALL add_user('admin', 'admin');
+CREATE USER 'admin'@'%' IDENTIFIED BY 'admin';
 CALL add_user('contributor', 'contributor');
+CREATE USER 'contributor'@'%' IDENTIFIED BY 'contributor';
 CALL add_user('api_access', 'api_access');
+CREATE USER 'api_access'@'%' IDENTIFIED BY 'api_access';
 
 -- Create the views
 CREATE VIEW top_movies_per_genre AS
